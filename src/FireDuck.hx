@@ -7,7 +7,7 @@ import tink.web.routing.*;
 @:await class FireDuck {
 	@:await static function main() {
 		// 'testing'._(trace('test'));
-    final router = new Router<tink.web.Session<User>, Root>(new Root());
+    final router = new Router<Session, Root>(new Root());
 		final handler = req -> router.route(Context.authed(req, cast Session.new)).recover(OutgoingResponse.reportError);
 		// final nodeHandler = #if (tink_http >= "0.10.0") this.handler.toNodeHandler.bind({}) #else NodeContainer.toNodeHandler.bind(this.handler, {}) #end;
     final container = new NodeContainer(8080);
