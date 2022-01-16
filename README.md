@@ -5,6 +5,7 @@ A tink_web session leveraging WildDuck+Firebase/Google Identity.
 # Usage
 
 ```haxe
+import fire_duck.Session;
 final router = new Router<Session, Root>(new Root());
 final handler = req -> router.route(Context.authed(req, cast Session.new)).recover(OutgoingResponse.reportError);
 container.run(handler);
