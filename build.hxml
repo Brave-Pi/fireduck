@@ -1,0 +1,13 @@
+--library hxnodejs
+--library bp_duck
+--library firebase-admin
+--library boisly_config
+--library boisly_gcp_secrets
+--library jsonwebtoken
+--library tink_await
+--library dts2hx_aliases
+-cp src
+-D analyzer-optimize
+
+--main FireDuck
+--js bin/node/test.js

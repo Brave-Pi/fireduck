@@ -1,0 +1,33 @@
+{
+  "fireDuck": {
+    "enableLogging": true
+  },
+  "duckApiUrl": "http://localhost:8081",
+  "wildDuck": {
+      "apiKey": "projects/423598292855/secrets/wildduck-api-key/versions/latest",
+      "domain": "gabedev.tech",
+      "idPrefix": "DuckSuite",
+      "registrationEnabled": true,
+      "reservedUsernames": [
+          "abuse",
+          "admin",
+          "administrator",
+          "hostmaster",
+          "majordomo",
+          "postmaster",
+          "root",
+          "ssl-admin",
+          "webmaster"
+      ],
+      "newUser": {
+          "quota": 1024,
+          "recipients": 2000,
+          "forwards": 2000
+      }
+  },
+  "firebase": {
+      "svcAccountEmail": "firebase-adminsdk-5h5m4@boisly.iam.gserviceaccount.com",
+      "audience": "https://identitytoolkit.googleapis.com/google.identity.identitytoolkit.v1.IdentityToolkit",
+      "privateKeyFile": "sa.pem"
+  }
+}
