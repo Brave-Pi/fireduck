@@ -21,9 +21,9 @@ class Root {
   public function new() {
 
   }
-  @:get('/')
+  @:sub('/')
   public function test(user:User)
-    return user;
+    return user.duck.api.addresses();
 }
 
 @:config
