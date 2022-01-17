@@ -17,7 +17,7 @@ typedef User = {
     var fire:UserRecord;
     var duck:{
         > UserInfoResult, 
-        api:tink.web.proxy.Remote<UserProxy>
+        api:Remote<UserProxy>
     };
 }
 ```
