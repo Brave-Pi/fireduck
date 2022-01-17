@@ -5,10 +5,10 @@ import fire_duck.Connectors;
 using fire_duck.Utils;
 
 typedef User = {
+	var fire:UserRecord;
 	var duck:{
 		> UserInfoResult, api:tink.web.proxy.Remote<UserProxy>
 	};
-	var fire:UserRecord;
 }
 
 @:await class Session {
