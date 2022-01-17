@@ -15,7 +15,7 @@ This injects a FireDuck `User` into your `tink_web` router.
 ```haxe
 typedef User = {
     var fire:UserRecord;
-	var duck:{
+    var duck:{
 		> UserInfoResult, api:tink.web.proxy.Remote<UserProxy>
 	};
 }
