@@ -1,6 +1,6 @@
 package fire_duck;
 
-class Connectors {
+@:await class Connectors {
 	static var getClient:Promise<tink.http.Client> = {
 		var client:tink.http.Client = new NodeClient();
 		var getApiKey:Promise<tink.Chunk> = AppSettings.config.wildDuck.apiKey;
@@ -35,9 +35,9 @@ class Connectors {
 		});
 	};
 
-	static function firebaseInit() {
+	@:await static function firebaseInit() {
 		FirebaseAdmin.initializeApp({
-			credential: firebase_admin.Credential.cert(boisly.AppSettings.config.firebase.svcCfg),
+			credential: firebase_admin.Credential.cert(haxe.Json.parse(@:await boisly.AppSettings.config.firebase.svcCfg)),
 			databaseURL: boisly.AppSettings.config.firebase.databaseURL
 		}, "fireduck");
 	}

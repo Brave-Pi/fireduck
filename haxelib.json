@@ -4,9 +4,9 @@
     "license": "MIT",
     "tags": ["firebase","wildduck","fire","duck","hxnodejs","node"],
     "description": "A tink_web session leveraging WildDuck+Firebase/Google Identity",
-    "version": "1.0.4",
+    "version": "1.0.41",
     "classPath": "src/",
-    "releasenote": "Firebase app name.",
+    "releasenote": "Fix overlapping access token issue, additional logging.",
     "contributors": ["piboistudios"],
     "dependencies": {
       "hxnodejs": "",

@@ -22,7 +22,7 @@ class Config extends boisly.gatekeeper.Config.AppConfig {
 		audience:String,
 		privateKeyFile:String,
     standalone:Bool,
-    svcCfg:Dynamic,
+    svcCfg:boisly.Secret,
     databaseURL:String
 	};
 }
