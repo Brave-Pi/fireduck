@@ -29,7 +29,6 @@ import jsonwebtoken.Algorithm;
 			displayName: userInfo.name,
 			uid: '${haxe.crypto.Base64.encode(haxe.io.Bytes.ofString(AppSettings.config.wildDuck.idPrefix))}.${userInfo.id}'
 		}))) catch (e) {
-			
 			e.details()._(throw Error.withData(500, "Firebase user creation error", e));
 		}
 		log("Got firebase user record");
@@ -40,17 +39,18 @@ import jsonwebtoken.Algorithm;
 		var dynUserInfo:Dynamic = userInfo;
 		dynUserInfo.ip = "0.0.0.0";
 		dynUserInfo.sess = 'DuckMail API';
-		final apiKey = try 'retrieving api key'._(@:await AppSettings.config.wildDuck.apiKey) catch (e) {
-			
-			e.details().drop(throw Error.withData(500, "Unable to retrieve API Key", e));
-      null;
-		}
+		// final apiKey = try 'retrieving api key'._(@:await AppSettings.config.wildDuck.apiKey) catch (e) {
+		// 	e.details().drop(throw Error.withData(500, "Unable to retrieve API Key", e));
+		// 	null;
+		// }
 		log('Updating WildDuck user metadata');
-		var result = try 'updating WildDuck user metadata'._(@:await duckProxy.users(apiKey).get(userInfo.id).update({metaData: userInfo.metaData})) catch (e) {
+		var result = try 'updating WildDuck user metadata'._(@:await duckProxy.users()
+			.get(userInfo.id)
+			.update({metaData: userInfo.metaData})) catch (e) {
 			log('WildDuck User Update Error:');
-			
+
 			e.details().drop(throw Error.withData(500, "WildDuck user update error", e));
-      null;
+			null;
 		}
 		log('Got user update result:');
 		log(result);
@@ -72,23 +72,22 @@ import jsonwebtoken.Algorithm;
 
 	@:async public static function auth(username:String, password:String, duckProxy:bp.duck.Proxy)
 		/* :Promise<JwtAuthResult> */ {
-		
-		final apiKey = try 'retrieving API key'._(@:await AppSettings.config.wildDuck.apiKey) catch (e) {
-			e.details()._(throw Error.withData(500, "Unable to retrieve API Key", e));
-		}
+		// final apiKey = try 'retrieving API key'._(@:await AppSettings.config.wildDuck.apiKey) catch (e) {
+		// 	e.details()._(throw Error.withData(500, "Unable to retrieve API Key", e));
+		// }
 		final result = try {
-			'authenticating WildDuck user'._(@:await duckProxy.auth(apiKey).login({
+			'authenticating WildDuck user'._(@:await duckProxy.auth().login({
 				username: username,
 				password: password
 			}));
 		} catch (e) {
+			log('failed to authenticate');
 			log(e);
 			throw Error.withData(500, "WildDuck Error", e);
 		}
 		if (result.success)
 			try {
-				
-				var userInfo = 'getting user info'._(@:await duckProxy.users(apiKey).get(result.id).info());
+				var userInfo = 'getting user info'._(@:await duckProxy.users().get(result.id).info());
 				log('got user info');
 				log(userInfo);
 				final metaData = userInfo.metaData;
@@ -99,7 +98,6 @@ import jsonwebtoken.Algorithm;
 				var updateClaims = false;
 				var firebaseUid = metaData.firebaseUid;
 				if (user == null || user.uid == null) {
-					
 					'making firebase user'._(@:await userInfo.mkFirebaseUser(duckProxy));
 					log('made firebase user');
 				} else if (user.disabled) {
@@ -118,8 +116,8 @@ import jsonwebtoken.Algorithm;
 					customClaims.wildDuck.userId = userInfo.id;
 				}
 				if (updateClaims) {
-					
-					try 'updating custom claims'._(@:await FirebaseAdmin.auth().setCustomUserClaims(firebaseUid, customClaims))
+					try
+						'updating custom claims'._(@:await FirebaseAdmin.auth().setCustomUserClaims(firebaseUid, customClaims))
 					catch (e) {
 						log("Couldn't update custom claims!");
 						log(e);
@@ -128,8 +126,8 @@ import jsonwebtoken.Algorithm;
 					log('custom claims updated');
 				}
 				var crypto = new NodeCrypto(); // pick a crypto from the jsonwebtoken.crypto package
-        var publicKeys:haxe.DynamicAccess<String> = if(AppSettings.config.firebase.standalone) @:await Connectors.publicKeys else null;
-        var keys = if(publicKeys != null) publicKeys.keys() else null;
+				var publicKeys:haxe.DynamicAccess<String> = if (AppSettings.config.firebase.standalone) @:await Connectors.publicKeys else null;
+				var keys = if (publicKeys != null) publicKeys.keys() else null;
 				var signer = new BasicSigner(RS256({
 					privateKey: 'reading private key'._(sys.io.File.getContent(AppSettings.config.firebase.privateKeyFile))
 				}), crypto);
@@ -146,11 +144,16 @@ import jsonwebtoken.Algorithm;
 					uid: Std.string(user.uid),
 					claims: customClaims
 				};
-        if(keys != null) payload.kid = keys[0];
-				return 'signing claims payload...'._(@:await signer.sign(payload).next(token -> ({
+				if (keys != null)
+					payload.kid = keys[0];
+				return try 'signing claims payload...'._(@:await signer.sign(payload).next(token -> ({
 					success: true,
 					token: token
-				})));
+				}))) catch(e) {
+          log('couldnt sign claims');
+          log(e.details());
+          throw Error.withData("Unable to sign claims", e);
+        };
 			} catch (e)
 				throw Error.withData('Something went wrong!', e)
 		else {

@@ -1,3 +1,8 @@
 .haxelib/**
 bin/**
 .vscode/**
+.firebaserc
+firebase.json
+*.zip
+*.pem
+node_modules/**

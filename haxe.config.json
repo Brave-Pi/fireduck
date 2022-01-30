@@ -4,30 +4,50 @@
   },
   "duckApiUrl": "http://localhost:8081",
   "wildDuck": {
-      "apiKey": "projects/423598292855/secrets/wildduck-api-key/versions/latest",
-      "domain": "gabedev.tech",
-      "idPrefix": "DuckSuite",
-      "registrationEnabled": true,
-      "reservedUsernames": [
-          "abuse",
-          "admin",
-          "administrator",
-          "hostmaster",
-          "majordomo",
-          "postmaster",
-          "root",
-          "ssl-admin",
-          "webmaster"
-      ],
-      "newUser": {
-          "quota": 1024,
-          "recipients": 2000,
-          "forwards": 2000
-      }
+    "apiKey": "projects/423598292855/secrets/wildduck-api-key/versions/latest",
+    "domain": "gabedev.tech",
+    "idPrefix": "DuckSuite",
+    "registrationEnabled": true,
+    "reservedUsernames": [
+      "abuse",
+      "admin",
+      "administrator",
+      "hostmaster",
+      "majordomo",
+      "postmaster",
+      "root",
+      "ssl-admin",
+      "webmaster"
+    ],
+    "newUser": {
+      "quota": 1024,
+      "recipients": 2000,
+      "forwards": 2000
+    }
+  },
+  "secrets": {
+    "svc": {
+      "clientEmail": "423598292855-compute@developer.gserviceaccount.com",
+      "privateKeyFile": "sa.pem"
+    }
   },
   "firebase": {
-      "svcAccountEmail": "firebase-adminsdk-5h5m4@boisly.iam.gserviceaccount.com",
-      "audience": "https://identitytoolkit.googleapis.com/google.identity.identitytoolkit.v1.IdentityToolkit",
-      "privateKeyFile": "sa.pem"
+    "svcAccountEmail": "firebase-adminsdk-5h5m4@boisly.iam.gserviceaccount.com",
+    "audience": "https://identitytoolkit.googleapis.com/google.identity.identitytoolkit.v1.IdentityToolkit",
+    "privateKeyFile": "sa.pem",
+    "standalone": true,
+    "databaseURL": "https://boisly.firebaseio.com",
+    "svcCfg": {
+      "type": "service_account",
+      "project_id": "boisly",
+      "private_key_id": "c20b0de1f9ba643abfdc09ca820e1981da84659d",
+      "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQC0losbqc0ZYGDa\nvHIWckBH8OQSc9IQ3gKJexxkuvEZ2FWzCffn2RsIfIBFNIBQuETwccavcX9pQ/bF\n6KZ+H7f3QvnTiMXSXV5ZvsJ5NKalv2DmPIpan4q5PCg+jcUCWMNoG4DV421NtFoH\nXNk8DF30t6PdTadhx3ic1PbB/xnTFAZQ+V1awh27nyJ3/J+uuHCKX4pHTCmPAVFF\nXzpxgrwQyVUu2pPCRNjXHIWvz0/AtqCalQdrRUjsQfuYBWYxkZMaFHHnogmhXRtZ\nYLq4sxmKvaVZVbRfyZJi+Ng0ZYZflvcMaMbuzJxYUEwbld59a6hb1MNuhJhNMkhM\n2UWu+zqrAgMBAAECggEAJmxBfMlMEjInaWLfA1ebxbLDVAnAkEYsVAQVrnj4A3+7\n/DQKwxG2Zr/WquLYylPqlx4eIAYODd+gCcvOYNdu1PUzIobfUDr9cCreRdul+W4W\nt+X5qf54DaF3DpgraqxoJyZy6w9Qmk/dN+PRdK1M8FyCSPvUuUEvsG6/cddNL1Of\n12YwtCdEQUAP+cgK7iWQgNWwmVokfVUOGA4kqnxsz5IPtKpqROe9QsD7VqPTejrM\nGBRod2oiiSlWHlRI4endZnuL+cxoBWnAPiOsminXfvilgdTJS6DAU8mLGYhZPahZ\njM28X/o5vulK5e8eBSE9osFcfnCkRh1Ov9hWz890QQKBgQDelylXkNogSpYSLqP2\nSiRndyJJcm49ROzcEeTm5zyE2YvH1xqFT5jb7BWQVzwcaMhcs1SArTqHOE4B28J5\nydqdx6Sj8V4SxxCQyMDJlQuuyoYmxbo/sfXij8TzMFQJoEpshK41jNjwg5um4ZzC\noqRaGKULpZm0nlRYMHIV0cc4DwKBgQDPsXoZktRNLygtoJaz2qe9wjLMhoh7gBnU\nR/ZY9n/zI9+2ozRAsOjA8rJk+gEF2TX4W5EAuUtYVZbfArdoi8uIe4s5hZtSBxAS\nklC6Gf0pFWaO+xxaYY/n2OV8F4oE73G28CsysP7NTA7K1xclLTAfVibFvc7JamUe\nbaQEYwlXpQKBgQDDUTsatmVgvnIPBFQlkot9KqGwdzPamXeJ6D3Gi5OkM0yfj9Wa\nsuy71d5aKOH7P8rI5Sc6PkdEThjNMqvkuEYX+w4yOWLF8V1M3ouklx+IQfgTX599\nssfDBUrZ5kdnpvqHXKmNHcliyukzN3eZpqO21zdEEAze26vBMsl48fnw6wKBgQCO\nugsLegCVThvRRzNpQ5DUcZkRPj6aiEy3ugBL4JHLF9MMIpms/yXkOqRnifqb90oE\nc4BxO+TQPnkgpjA+Ext6nlPt4qf7NclQyeXaDjQQQJmrFlvErJkFHeOOZGq/u4Cs\n090Lx+BCWssrj6ZjMOuKDV01tJtfhNMalwQI07o+1QKBgQC+h8V6jghZjlk4YqOa\nf3r3wJwvRm1rSN2TTH6M7mdZZWPkZYNIVBUvaPZ11HNun+87XORki2jncjXsi8qP\nsRANU6cjJzyEXGgKVoo9D5XdHezbOVEKn0wibH3QkCk+LeESCWvrYi0n+nfyDuH2\nA++FST3M4NmTBEZpG8JYNOLKBg==\n-----END PRIVATE KEY-----\n",
+      "client_email": "firebase-adminsdk-5h5m4@boisly.iam.gserviceaccount.com",
+      "client_id": "112970473386788213102",
+      "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+      "token_uri": "https://oauth2.googleapis.com/token",
+      "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+      "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-5h5m4%40boisly.iam.gserviceaccount.com"
+    }
   }
 }
