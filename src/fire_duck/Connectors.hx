@@ -21,4 +21,12 @@ class Connectors {
     });
   }
 	public static var duck:Promise<bp.duck.Proxy> = getClient.next(client -> tink.Web.connect((AppSettings.config.duckApiUrl : bp.duck.proxy.WildDuckProxy), {client: client}));
+  public static var pkapi:Promise<tink.web.proxy.Remote<PKAPI>> = getClient.next(client -> tink.Web.connect(('https://www.googleapis.com' : PKAPI)));
+  public static var publicKeys:Promise<haxe.DynamicAccess<String>> = pkapi.next(api -> api.getPublicKeys());
+}
+
+
+interface PKAPI {
+  @:get('/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com')
+  function getPublicKeys():Dynamic<String>;
 }

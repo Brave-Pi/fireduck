@@ -7,7 +7,8 @@ typedef JwtAuthResult = {
 typedef FirebaseAuthJwt = {
 	> jsonwebtoken.Claims,
 	?uid:String,
-	?claims:Dynamic
+	?claims:Dynamic,
+  ?kid:String
 }
 
 typedef UserCreationInfo = {

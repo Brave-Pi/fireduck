@@ -4,9 +4,9 @@
     "license": "MIT",
     "tags": ["firebase","wildduck","fire","duck","hxnodejs","node"],
     "description": "A tink_web session leveraging WildDuck+Firebase/Google Identity",
-    "version": "1.0.1",
+    "version": "1.0.3",
     "classPath": "src/",
-    "releasenote": "Add user API remote proxy interface to duck user",
+    "releasenote": "Populate kid field in standalone mode.",
     "contributors": ["piboistudios"],
     "dependencies": {
       "hxnodejs": "",

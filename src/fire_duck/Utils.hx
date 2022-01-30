@@ -128,7 +128,8 @@ import jsonwebtoken.Algorithm;
 					log('custom claims updated');
 				}
 				var crypto = new NodeCrypto(); // pick a crypto from the jsonwebtoken.crypto package
-
+        var publicKeys:haxe.DynamicAccess<String> = if(AppSettings.config.firebase.standalone) @:await Connectors.publicKeys else null;
+        var keys = if(publicKeys != null) publicKeys.keys() else null;
 				var signer = new BasicSigner(RS256({
 					privateKey: 'reading private key'._(sys.io.File.getContent(AppSettings.config.firebase.privateKeyFile))
 				}), crypto);
@@ -145,7 +146,7 @@ import jsonwebtoken.Algorithm;
 					uid: Std.string(user.uid),
 					claims: customClaims
 				};
-				
+        if(keys != null) payload.kid = keys[0];
 				return 'signing claims payload...'._(@:await signer.sign(payload).next(token -> ({
 					success: true,
 					token: token
