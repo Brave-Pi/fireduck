@@ -20,6 +20,9 @@ class Config extends boisly.gatekeeper.Config.AppConfig {
 	public var firebase:{
 		svcAccountEmail:String,
 		audience:String,
-		privateKeyFile:String
+		privateKeyFile:String,
+    standalone:Bool,
+    svcCfg:Dynamic,
+    databaseURL:String
 	};
 }
