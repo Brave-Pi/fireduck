@@ -4,9 +4,9 @@
     "license": "MIT",
     "tags": ["firebase","wildduck","fire","duck","hxnodejs","node"],
     "description": "A tink_web session leveraging WildDuck+Firebase/Google Identity",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "classPath": "src/",
-    "releasenote": "Populate kid field in standalone mode.",
+    "releasenote": "Firebase app name.",
     "contributors": ["piboistudios"],
     "dependencies": {
       "hxnodejs": "",

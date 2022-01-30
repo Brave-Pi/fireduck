@@ -18,7 +18,7 @@ class Connectors {
     FirebaseAdmin.initializeApp({
       credential: firebase_admin.Credential.cert(boisly.AppSettings.config.firebase.svcCfg),
       databaseURL: boisly.AppSettings.config.firebase.databaseURL
-    });
+    }, "fireduck");
   }
 	public static var duck:Promise<bp.duck.Proxy> = getClient.next(client -> tink.Web.connect((AppSettings.config.duckApiUrl : bp.duck.proxy.WildDuckProxy), {client: client}));
   public static var pkapi:Promise<tink.web.proxy.Remote<PKAPI>> = getClient.next(client -> tink.Web.connect(('https://www.googleapis.com' : PKAPI)));
