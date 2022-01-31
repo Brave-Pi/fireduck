@@ -26,15 +26,15 @@ typedef User = {
 				try {
 					var api:tink.web.proxy.Remote<UserProxy> = null;
 					var fire:Dynamic = @:await token.getFirebaseUser();
-					var duck:Dynamic = try @:await ((api = (@:await Connectors.duck).users(@:await AppSettings.config.wildDuck.apiKey)
-						.get((fire.customClaims : Dynamic).wildDuck.userId))).info() catch (e) null;
+					var duck:Dynamic = try @:await ((api = (@:await Connectors.duck).users()
+						.get((fire.customClaims : Dynamic).wildDuck.userId))).info() catch (e) {};
 					duck.api = api;
 					Some({
 						fire: fire,
 						duck: duck
 					});
 				} catch (e) {
-					trace(e.details());
+					log(e.details());
 					throw Error.withData('Unable to authenticate', e);
 				}
 			case Failure(e):
