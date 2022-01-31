@@ -13,7 +13,7 @@ import jsonwebtoken.Algorithm;
 		if (userInfo.address == null)
 			throw new Error(NotFound, "No email address found for user");
 
-		log('Creating firebase user record for:');
+		log('Creating firebase user record gfor:');
 		log(userInfo);
 		var _auth:firebase_admin.lib.auth.auth.Auth = null;
 		try {
@@ -64,7 +64,7 @@ import jsonwebtoken.Algorithm;
 	@:async public static function getFirebaseUser(firebaseIdToken:String) {
 		var config = AppSettings.config.wildDuck;
 		var firebaseUserId = try @:await FirebaseAdmin.auth()
-			.verifyIdToken(firebaseIdToken) catch (e) throw Error.withData("Firebase Id Verification Error", e);
+			.verifyIdToken(firebaseIdToken) catch (e) throw Error.withData("Firebase Id Verification Error: " + e.details(), e);
 		var firebaseUser:UserRecord = try @:await FirebaseAdmin.auth()
 			.getUser(firebaseUserId.uid) catch (e) throw Error.withData("Firebase User Retrieval Error", e);
 		return firebaseUser;

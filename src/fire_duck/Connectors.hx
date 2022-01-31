@@ -36,9 +36,11 @@ package fire_duck;
 	};
 
 	@:await static function firebaseInit() {
+    final cfg = haxe.Json.parse(@:await boisly.AppSettings.config.firebase.svcCfg);
+    trace(cfg);
 		FirebaseAdmin.initializeApp({
-			credential: firebase_admin.Credential.cert(haxe.Json.parse(@:await boisly.AppSettings.config.firebase.svcCfg)),
-			databaseURL: boisly.AppSettings.config.firebase.databaseURL
+			credential: firebase_admin.Credential.cert(cfg)
+			// databaseURL: boisly.AppSettings.config.firebase.databaseURL
 		}, "fireduck");
 	}
 

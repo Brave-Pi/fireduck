@@ -6,3 +6,4 @@ firebase.json
 *.zip
 *.pem
 node_modules/**
+.env

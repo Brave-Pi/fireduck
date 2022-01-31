@@ -32,7 +32,7 @@
     }
   },
   "firebase": {
-    "svcAccountEmail": "firebase-adminsdk-5h5m4@boisly.iam.gserviceaccount.com",
+    "svcAccountEmail": "firebase-adminsdk-cyl0m@boisly.iam.gserviceaccount.com",
     "audience": "https://identitytoolkit.googleapis.com/google.identity.identitytoolkit.v1.IdentityToolkit",
     "privateKeyFile": "sa.pem",
     "standalone": true,

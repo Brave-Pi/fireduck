@@ -34,11 +34,10 @@ typedef User = {
 						duck: duck
 					});
 				} catch (e) {
-					trace(e);
-					None;
+					trace(e.details());
+					throw Error.withData('Unable to authenticate', e);
 				}
 			case Failure(e):
-				trace(e);
 				None;
 		};
 }
