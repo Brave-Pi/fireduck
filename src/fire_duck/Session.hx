@@ -34,7 +34,7 @@ typedef User = {
 						duck: duck
 					});
 				} catch (e) {
-					log(e.details());
+					Logger.log(e.details());
 					throw Error.withData('Unable to authenticate', e);
 				}
 			case Failure(e):

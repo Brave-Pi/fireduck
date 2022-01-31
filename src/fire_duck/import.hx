@@ -20,6 +20,7 @@ import tink.http.Request;
 import tink.http.clients.*;
 import boisly.AppSettings;
 import fire_duck.Types;
+import fire_duck.Logger;
 
 using tink.io.Source;
 import tink.Url;
