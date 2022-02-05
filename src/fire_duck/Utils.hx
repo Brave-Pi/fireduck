@@ -13,7 +13,7 @@ import jsonwebtoken.Algorithm;
 		if (userInfo.address == null)
 			throw new Error(NotFound, "No email address found for user");
 
-		log('Creating firebase user record gfor:');
+		log('Creating firebase user record for:');
 		log(userInfo);
 		var _auth:firebase_admin.lib.auth.auth.Auth = null;
 		try {
@@ -44,9 +44,7 @@ import jsonwebtoken.Algorithm;
 		// 	null;
 		// }
 		log('Updating WildDuck user metadata');
-		var result = try 'updating WildDuck user metadata'._(@:await duckProxy.users()
-			.get(userInfo.id)
-			.update({metaData: userInfo.metaData})) catch (e) {
+		var result = try 'updating WildDuck user metadata'._(@:await duckProxy.users().get(userInfo.id).update({metaData: userInfo.metaData})) catch (e) {
 			log('WildDuck User Update Error:');
 
 			e.details().drop(throw Error.withData(500, "WildDuck user update error", e));
@@ -91,7 +89,7 @@ import jsonwebtoken.Algorithm;
 				log('got user info');
 				log(userInfo);
 				final metaData = userInfo.metaData;
-				final user:Dynamic = try 'getting firebase user'._(@:await FirebaseAdmin.auth().getUserByEmail(userInfo.address)) catch (_) null;
+				var user:Dynamic = try 'getting firebase user'._(@:await FirebaseAdmin.auth().getUserByEmail(userInfo.address)) catch (_) null;
 				log('got firebase user');
 				log(user);
 				var customClaims:Dynamic = if (user != null) user.customClaims else null;
@@ -99,6 +97,7 @@ import jsonwebtoken.Algorithm;
 				var firebaseUid = metaData.firebaseUid;
 				if (user == null || user.uid == null) {
 					'making firebase user'._(@:await userInfo.mkFirebaseUser(duckProxy));
+					user = try 'getting firebase user'._(@:await FirebaseAdmin.auth().getUserByEmail(userInfo.address)) catch (_) null;
 					log('made firebase user');
 				} else if (user.disabled) {
 					log('user not authorized');
@@ -109,9 +108,12 @@ import jsonwebtoken.Algorithm;
 				if (customClaims == null) {
 					updateClaims = true;
 					customClaims = {
-						wildDuck: {}
+						wildDuck: {
+							userId: userInfo.id
+						}
 					}
-				} else if (customClaims.wildDuck.userId == null) {
+				}
+				if (customClaims.wildDuck.userId == null) {
 					updateClaims = true;
 					customClaims.wildDuck.userId = userInfo.id;
 				}
@@ -121,13 +123,11 @@ import jsonwebtoken.Algorithm;
 					catch (e) {
 						log("Couldn't update custom claims!");
 						log(e);
-						throw Error.withData("Couldn't update custom claims", e);
+						// throw Error.withData("Couldn't update custom claims", e);
 					}
 					log('custom claims updated');
 				}
 				var crypto = new NodeCrypto(); // pick a crypto from the jsonwebtoken.crypto package
-				var publicKeys:haxe.DynamicAccess<String> = if (AppSettings.config.firebase.standalone) @:await Connectors.publicKeys else null;
-				var keys = if (publicKeys != null) publicKeys.keys() else null;
 				var signer = new BasicSigner(RS256({
 					privateKey: 'reading private key'._(sys.io.File.getContent(AppSettings.config.firebase.privateKeyFile))
 				}), crypto);
@@ -138,22 +138,20 @@ import jsonwebtoken.Algorithm;
 					iat: Date.now(),
 					exp: {
 						final now = Date.now();
-						new Date(now.getFullYear(), now.getMonth(), now.getDay(), now.getHours() + 1, now.getMinutes(), now.getSeconds());
+						new Date(now.getFullYear(), now.getMonth(), now.getDay() - 1, now.getHours() + 1, now.getMinutes(), now.getSeconds());
 					},
 					nbf: Date.now(),
-					uid: Std.string(user.uid),
-					claims: customClaims
+					uid: Std.string(user.uid)
 				};
-				if (keys != null)
-					payload.kid = keys[0];
+				payload.claims = customClaims;
 				return try 'signing claims payload...'._(@:await signer.sign(payload).next(token -> ({
 					success: true,
 					token: token
-				}))) catch(e) {
-          log('couldnt sign claims');
-          log(e.details());
-          throw Error.withData("Unable to sign claims", e);
-        };
+				}))) catch (e) {
+					log('couldnt sign claims');
+					log(e.details());
+					throw Error.withData("Unable to sign claims", e);
+				};
 			} catch (e)
 				throw Error.withData('Something went wrong!', e)
 		else {

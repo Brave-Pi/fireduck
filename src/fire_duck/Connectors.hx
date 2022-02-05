@@ -1,5 +1,7 @@
 package fire_duck;
-
+#if debug
+import fire_duck.Logger.log;
+#end
 @:await class Connectors {
 	static var getClient:Promise<tink.http.Client> = {
 		var client:tink.http.Client = new NodeClient();
