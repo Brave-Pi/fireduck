@@ -1,18 +1,17 @@
 package fire_duck;
-#if debug
-import fire_duck.Logger.log;
-#end
+
 @:await class Connectors {
 	static var getClient:Promise<tink.http.Client> = {
 		var client:tink.http.Client = new NodeClient();
+		trace(boisly.AppSettings.config);
 		var getApiKey:Promise<tink.Chunk> = AppSettings.config.wildDuck.apiKey;
-		if (AppSettings.config.firebase.standalone)
-			firebaseInit();
+		firebaseInit();
 		getApiKey.next(apiKey -> {
 			client.augment({
 				before: [
 					req -> {
-						@:privateAccess req.header.fields.push(new HeaderField("x-access-token", apiKey));
+						@:privateAccess req.header.fields.push(new HeaderField("x-access-token",
+							apiKey));
 						req;
 					}
 				]
@@ -23,11 +22,12 @@ import fire_duck.Logger.log;
 							req.body.all().next(body -> {
 								log(req.header);
 								log(body);
-								res.body.all().next(body -> {
-									log(res.header);
-									log(body);
-									res;
-								});
+								res.body.all()
+									.next(body -> {
+										log(res.header);
+										log(body);
+										res;
+									});
 							});
 						}
 					}
@@ -38,18 +38,29 @@ import fire_duck.Logger.log;
 	};
 
 	@:await static function firebaseInit() {
-    final cfg = haxe.Json.parse(@:await boisly.AppSettings.config.firebase.svcCfg);
+		final cfg = haxe.Json.parse(@:await
+			boisly.AppSettings.config.firebase.svcCfg);
+		if (AppSettings.config.firebase.standalone)
+			FirebaseAdmin.initializeApp({
+				credential: firebase_admin.Credential.cert(cfg) // databaseURL: boisly.AppSettings.config.firebase.databaseURL
+			});
 		FirebaseAdmin.initializeApp({
-			credential: firebase_admin.Credential.cert(cfg)
-			// databaseURL: boisly.AppSettings.config.firebase.databaseURL
+			credential: firebase_admin.Credential.cert(cfg) // databaseURL: boisly.AppSettings.config.firebase.databaseURL
 		}, "fireduck");
 	}
 
-	public static var duck:Promise<bp.duck.Proxy> = getClient.next(client -> tink.Web.connect((AppSettings.config.duckApiUrl : bp.duck.proxy.WildDuckProxy),
-		{client: client}));
-	public static var pkapi:Promise<tink.web.proxy.Remote<PKAPI>> = getClient.next(client -> tink.Web.connect(('https://www.googleapis.com' : PKAPI),
-		{client: client}));
-	public static var publicKeys:Promise<haxe.DynamicAccess<String>> = pkapi.next(api -> api.getPublicKeys());
+	public static var duck:Promise<bp.duck.Proxy> = getClient.next(client ->
+		tink.Web.connect((AppSettings.config.duckApiUrl : bp.duck.proxy.WildDuckProxy),
+		{
+			client: client
+		}));
+	public static var pkapi:Promise<tink.web.proxy.Remote<PKAPI>> = getClient.next(client ->
+		tink.Web.connect(('https://www.googleapis.com' : PKAPI),
+			{
+		client: client
+	}));
+	public static var publicKeys:Promise<haxe.DynamicAccess<String>> = pkapi.next(api ->
+		api.getPublicKeys());
 }
 
 interface PKAPI {

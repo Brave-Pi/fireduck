@@ -102,9 +102,9 @@ import jsonwebtoken.Algorithm;
 				} else if (user.disabled) {
 					log('user not authorized');
 					throw new Error(Unauthorized, 'Unauthorized');
-				} else {
-					firebaseUid = user.uid;
 				}
+					firebaseUid = user.uid;
+				
 				if (customClaims == null) {
 					updateClaims = true;
 					customClaims = {
